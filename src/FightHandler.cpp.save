@@ -323,21 +323,20 @@ bool FightHandler::pBattle(Entity &player, Entity &enemy, GraphicsHandler &handl
     float timestep = 1;
     float frames = 10;
     string edir, pdir;
-    pdir = "R";
+    pdir = "";
     edir = pickRandDefence(enemy);
     Event e = Event();
     while(true)
     {
-        window.clear();
-        window.draw(handler.getSprite("TestBattleBackground"));
-        window.draw(handler.getSprite(enemy.name + "Defend" + edir));
-        window.draw(handler.getSprite(player.name + "Att" + pdir + "1"));
-        window.display();
         window.waitEvent(e);
         if(e.type == Event::KeyPressed)
         {
             if(e.key.code == Keyboard::Enter)
             {
+                if(pdir == "")
+                {
+                    pdir = "R";
+                }
                 break;
             }
             if(Keyboard::isKeyPressed(Keyboard::Right))
@@ -369,6 +368,10 @@ bool FightHandler::pBattle(Entity &player, Entity &enemy, GraphicsHandler &handl
                 pdir = "U";
             }
         }
+        window.clear();
+        window.draw(handler.getSprite("TestBattleBackground"));
+        window.draw(handler.getSprite(enemy.name + "Defend" + edir));
+        window.draw(handler.getSprite(player.name + "Att" + pdir + 1));
     }
     for(int i=1; i<=frames; i++)
     {

@@ -17,7 +17,8 @@ class FightHandler
         std::ifstream mapFile;
         void fight(GraphicsHandler &handler);
         bool attack(GraphicsHandler &handler,Entity &player, Entity (&enemy)[4], int x, int y);
-        bool battle(Entity &player, Entity &enemy, GraphicsHandler &handler);
+        bool pBattle(Entity &player, Entity &enemy, GraphicsHandler &handler);
+        std::string pickRandDefence(Entity &enemy);
         sf::Clock updateStep;
 
     protected:
