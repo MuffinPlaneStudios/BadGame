@@ -47,7 +47,8 @@ int main()
                                 } else { i--;}
                             }
                             y--;
-                            cout<<ehand.event(handler.m.tmap[x][y]);
+                            ehand.event(handler.m.tmap[x][y]);
+                            cout<<"back";
                             handler.updateMap(xpos,ypos);
                         }
                         while(ev)
