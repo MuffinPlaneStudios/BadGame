@@ -14,7 +14,7 @@ class GraphicsHandler
         sf::RenderWindow &getWindow();
         void updateMap(int xpos, int ypos);
         void init();
-        void loadAttack(std::string charName, char slot);
+        void loadAttack(std::string name, char slot);
         void drawBattleMap(char field[25][15]);
         void updateBattle(int state, int moves[2],char infoMap[25][15], int mov, char field[25][15], int xpos, int ypos, Entity party[4], Entity enemy[4]);
         void updateAttack(Entity enemy[4], int selection);

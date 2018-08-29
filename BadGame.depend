@@ -1093,13 +1093,13 @@
 	<Entity.h>
 	<SFML/Graphics.hpp>
 
-1533584889 source:c:\users\danny\documents\badgame\main.cpp
+1534809849 source:c:\users\danny\documents\badgame\main.cpp
 	<SFML/Graphics.hpp>
 	<GraphicsHandler.h>
 	<Map.h>
 	<EventHandler.h>
 
-1532031924 c:\users\danny\documents\badgame\include\graphicshandler.h
+1534804276 c:\users\danny\documents\badgame\include\graphicshandler.h
 	<SFML/Graphics.hpp>
 	<Map.h>
 	<Entity.h>
@@ -1113,7 +1113,7 @@
 1530568387 c:\users\danny\documents\badgame\include\tile.h
 	<SFML/Graphics.hpp>
 
-1532024908 c:\users\danny\documents\badgame\include\entity.h
+1535398967 c:\users\danny\documents\badgame\include\entity.h
 	<SFML/Graphics.hpp>
 
 1531787762 c:\users\danny\documents\badgame\include\eventhandler.h
@@ -1126,17 +1126,17 @@
 	<stdlib.h>
 	<SFML/Graphics.hpp>
 
-1533592665 c:\users\danny\documents\badgame\include\fighthandler.h
+1533837964 c:\users\danny\documents\badgame\include\fighthandler.h
 	<SFML/Graphics.hpp>
 	<iostream>
 	<fstream>
 	<GraphicsHandler.h>
 
-1533584951 source:c:\users\danny\documents\badgame\src\entity.cpp
+1535399098 source:c:\users\danny\documents\badgame\src\entity.cpp
 	<Entity.h>
 	<SFML/Graphics.hpp>
 
-1533584957 source:c:\users\danny\documents\badgame\src\eventhandler.cpp
+1534809770 source:c:\users\danny\documents\badgame\src\eventhandler.cpp
 	<EventHandler.h>
 	<SFML/Graphics.hpp>
 	<Event.h>
@@ -1154,7 +1154,7 @@
 	<iostream>
 	<SFML/Graphics.hpp>
 
-1533593975 source:c:\users\danny\documents\badgame\src\fighthandler.cpp
+1535401286 source:c:\users\danny\documents\badgame\src\fighthandler.cpp
 	<FightHandler.h>
 	<SFML/Graphics.hpp>
 	<iostream>
@@ -1163,7 +1163,7 @@
 	<Entity.h>
 	<cstdlib>
 
-1533592111 source:c:\users\danny\documents\badgame\src\graphicshandler.cpp
+1535400973 source:c:\users\danny\documents\badgame\src\graphicshandler.cpp
 	<GraphicsHandler.h>
 	<SFML/Graphics.hpp>
 	<iostream>

@@ -28,11 +28,15 @@ void GraphicsHandler::init()
     }
     string chars[] = {"TestPlayer", "TestEnemy"};
     string defDirections[] = {"UL","U","DL","R","D","L"};
-    string attDirections[] = {"UR","DR","R","DL","UL","L","U"};
+    char attDirections[] = {'U', 'R', 'L'};
+    cout<<'\n'<<"LOADED "<<tcount<<" textures in "<<c.getElapsedTime().asSeconds()<<" seconds.";
     for(string a : chars)
     {
         temp.loadFromFile("Images/" + a + "/" + a + ".png");
         texts[a] = temp;
+        tcount++;
+        temp.loadFromFile("Images/" + a + "/" + a + "MOVED.png");
+        texts[a + "MOVED"] = temp;
         tcount++;
 
         for(string dir : defDirections)
@@ -41,14 +45,15 @@ void GraphicsHandler::init()
             texts[a + "Defend" + dir] = temp;
             tcount++;
         }
-        for(string dir : attDirections)
+        temp.loadFromFile("Images/" + a + "/Defend/" + a + "DefendN.png");
+        texts[a + "DefendN"] = temp;
+        tcount++;
+        temp.loadFromFile("Images/" + a + "/Att/AttackN.png");
+        texts[a + "AttN1"] = temp;
+        tcount++;
+        for(char dir : attDirections)
         {
-            for(int i = 1; i <= 10; i++)
-            {
-                temp.loadFromFile("Images/" + a + "/Att/" + dir + "/Attack" + dir + to_string(i) + ".png");
-                texts[a + "Att" + dir + to_string(i)] = temp;
-                tcount++;
-            }
+            loadAttack(a,dir);
         }
     }
     temp.loadFromFile("Images/TestBattleBackground.png");
@@ -66,6 +71,66 @@ void GraphicsHandler::init()
         }
     }
     texts["TileMap"] = texmap.getTexture();
+}
+void GraphicsHandler::loadAttack(string charName, char slot)
+{
+    if(charName == "") { return;}
+    Texture temp;
+    int tcount = 0;
+    Clock clo;
+    clo.restart();
+    switch(slot)
+    {
+    case 'U':
+        for(int i = 1; i <= 10; i++)
+        {
+            temp.loadFromFile("Images/" + charName + "/Att/" + "U" + "/Attack" + "U" + to_string(i) + ".png");
+            texts[charName + "Att" + "U" + to_string(i)] = temp;
+            tcount++;
+        }
+        break;
+    case 'R':
+        for(int i = 1; i <= 10; i++)
+        {
+            temp.loadFromFile("Images/" + charName + "/Att/" + "UR" + "/Attack" + "UR" + to_string(i) + ".png");
+            texts[charName + "Att" + "UR" + to_string(i)] = temp;
+            tcount++;
+        }
+        for(int i = 1; i <= 10; i++)
+        {
+            temp.loadFromFile("Images/" + charName + "/Att/" + "R" + "/Attack" + "R" + to_string(i) + ".png");
+            texts[charName + "Att" + "R" + to_string(i)] = temp;
+            tcount++;
+        }
+        for(int i = 1; i <= 10; i++)
+        {
+            temp.loadFromFile("Images/" + charName + "/Att/" + "DR" + "/Attack" + "DR" + to_string(i) + ".png");
+            texts[charName + "Att" + "DR" + to_string(i)] = temp;
+            tcount++;
+        }
+        break;
+    case 'L':
+        for(int i = 1; i <= 10; i++)
+        {
+            temp.loadFromFile("Images/" + charName + "/Att/" + "UL" + "/Attack" + "UL" + to_string(i) + ".png");
+            texts[charName + "Att" + "UL" + to_string(i)] = temp;
+            tcount++;
+        }
+        for(int i = 1; i <= 10; i++)
+        {
+            temp.loadFromFile("Images/" + charName + "/Att/" + "L" + "/Attack" + "L" + to_string(i) + ".png");
+            texts[charName + "Att" + "L" + to_string(i)] = temp;
+            tcount++;
+        }
+        for(int i = 1; i <= 10; i++)
+        {
+            temp.loadFromFile("Images/" + charName + "/Att/" + "DL" + "/Attack" + "DL" + to_string(i) + ".png");
+            texts[charName + "Att" + "DL" + to_string(i)] = temp;
+            tcount++;
+        }
+        break;
+    }
+    cout<<'\n'<<"LOADED "<<tcount<<" textures in "<<clo.getElapsedTime().asSeconds()<<" seconds.";
 }
 Sprite GraphicsHandler::getSprite(string a, int x, int y)
 {
@@ -99,11 +164,11 @@ void GraphicsHandler::updateBattle(int state, int moves[2], char infoMap[25][15]
     window.draw(getSprite("UI",xwin*63));
     for(int x = 0; x<4; x++)
     {
-        if(party[x].health >0) { window.draw(getSprite(party[x].name, party[x].xpos*63, party[x].ypos*63));}
+        if(party[x].isAlive) { window.draw(getSprite(party[x].name + (party[x].hasMoved?"MOVED":""), party[x].xpos*63, party[x].ypos*63));}
     }
     for(int x = 0; x<4; x++)
     {
-        if(enemy[x].health >0) { window.draw(getSprite(enemy[x].name, enemy[x].xpos*63, enemy[x].ypos*63));}
+        if(enemy[x].isAlive) { window.draw(getSprite(enemy[x].name + (enemy[x].hasMoved?"MOVED":""), enemy[x].xpos*63, enemy[x].ypos*63));}
     }
     if(state == 1)
     {
@@ -142,8 +207,47 @@ void GraphicsHandler::updateBattle(int state, int moves[2], char infoMap[25][15]
     window.draw(getSprite("Cursor",xpos,ypos));
     window.display();
 }
-void GraphicsHandler::updateAttack(Entity enemy[4], int selection)
+void GraphicsHandler::updateBattle(char infoMap[25][15],char field[25][15], Entity party[4], Entity enemy[4], int selection)
 {
+    window.clear();
+    int xs = 25;
+    int ys = 15;
+    for(int x = 0; x < xs; x++)
+    {
+        for(int y = 0; y < ys; y++)
+        {
+            switch(field[x][y])
+            {
+            case '.':
+                window.draw(getSprite("BlankTile", x*63, y*63));
+                break;
+            case '#':
+                window.draw(getSprite("TestTile", x*63, y*63));
+                break;
+            default:
+                window.draw(getSprite("BlankTile", x*63, y*63));
+                break;
+            }
+        }
+    }
+    window.draw(getSprite("UI",xwin*63));
+    for(int x = 0; x<4; x++)
+    {
+        if(party[x].health >0)
+            {
+            if(party[x].hasMoved)
+            {
+                window.draw(getSprite(party[x].name + "MOVED", party[x].xpos*63, party[x].ypos*63));
+            } else
+            {
+                window.draw(getSprite(party[x].name, party[x].xpos*63, party[x].ypos*63));
+            }
+        }
+    }
+    for(int x = 0; x<4; x++)
+    {
+        if(enemy[x].health >0) { window.draw(getSprite(enemy[x].name, enemy[x].xpos*63, enemy[x].ypos*63));}
+    }
     for(int x = 0; x<4; x++)
     {
         window.draw(getSprite(enemy[x].name, enemy[x].xpos*63, enemy[x].ypos*63));
